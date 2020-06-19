@@ -1,0 +1,81 @@
+module NetFlow;
+
+type Header = unit {
+  # NetFlow export format version number
+  version:         uint16;
+  # Number of flows exported in this packet (1-30)
+  count:           uint16;
+  # Current time in milliseconds since the export device booted
+  SysUptime:       uint32;
+  # Current count of seconds since 0000 UTC 1970
+  unix_secs:       uint32;
+  # Residual nanoseconds since 0000 UTC 1970
+  unix_nsecs:      uint32;
+  # Residual nanoseconds since 0000 UTC 1970
+  flow_sequence:   uint32;
+  # Type of flow-switching engine
+  engine_type:     uint8;
+  # Slot number of the flow-switching engine
+  engine_id:       uint8;
+  # Sampling mode and interval
+  sampling:        bitfield(16) {
+    mode: 0..1;
+    interval_: 2..15; # interval is a reserved token
+  };
+
+  on %done { print self; } 
+};
+
+type Record = unit {
+  # Source IP address
+  srcaddr:     addr &ipv4;
+  # Destination IP address
+  dstaddr:     addr &ipv4;
+  # IP address of next hop router
+  nexthop:     addr &ipv4;
+  # SNMP index of input interface
+  input:       uint16;
+  # SNMP index of output interface
+  output:      uint16;
+  # Packets in the flow
+  dPkts:       uint32;
+  # Total number of Layer 3 bytes in the packets of the flow
+  dOctets:     uint32;
+  # SysUptime at start of flow
+  First:       uint32;
+  # SysUptime at the time the last packet of the flow was received
+  Last:        uint32;
+  # TCP/UDP source port number or equivalent
+  srcport:     uint16;
+  # TCP/UDP destination port number or equivalent
+  dstport:     uint16;
+  # Unused (zero) bytes
+  pad1:        uint8;
+  # Cumulative OR of TCP flags
+  tcp_flags:   uint8;
+  # IP protocol type (for example, TCP = 6; UDP = 17)
+  prot:        uint8;
+  # IP type of service (ToS)
+  tos:         uint8;
+  # Autonomous system number of the source, either origin or peer
+  src_as:      uint16;
+  # Autonomous system number of the destination, either origin or peer
+  dst_as:      uint16;
+  # Source address prefix mask bits
+  src_mask:    uint8;
+  # Destination address prefix mask bits
+  dst_mask:    uint8;
+  # Unused (zero) bytes
+  pad2:        uint16;
+
+  on %done { print self; } 
+};
+
+type Packet = unit {
+  header: Header;
+  records: Record[self.header.count];
+};
+
+public type Stream = unit {
+  : Packet[];
+};
