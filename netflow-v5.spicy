@@ -8,7 +8,7 @@ type Header = unit {
   # Current time in milliseconds since the export device booted
   SysUptime:       uint32;
   # Current count of seconds since 0000 UTC 1970
-  unix_secs:       uint32;
+  unix_secs:       uint32 &convert=cast<time>($$);
   # Residual nanoseconds since 0000 UTC 1970
   unix_nsecs:      uint32;
   # Residual nanoseconds since 0000 UTC 1970
@@ -42,9 +42,9 @@ type Record = unit {
   # Total number of Layer 3 bytes in the packets of the flow
   dOctets:     uint32;
   # SysUptime at start of flow
-  First:       uint32;
+  First:       uint32 &convert=cast<time>($$);
   # SysUptime at the time the last packet of the flow was received
-  Last:        uint32;
+  Last:        uint32 &convert=cast<time>($$);
   # TCP/UDP source port number or equivalent
   srcport:     uint16;
   # TCP/UDP destination port number or equivalent
