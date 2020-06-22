@@ -2,7 +2,7 @@ module NetFlow;
 
 type Header = unit {
   # NetFlow export format version number
-  version:         uint16;
+  version:         uint16(5);
   # Number of flows exported in this packet (1-30)
   count:           uint16;
   # Current time in milliseconds since the export device booted
