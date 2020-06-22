@@ -11,7 +11,7 @@ type Header = unit {
   unix_secs:       uint32 &convert=cast<time>($$);
   # Residual nanoseconds since 0000 UTC 1970
   unix_nsecs:      uint32;
-  # Residual nanoseconds since 0000 UTC 1970
+  # Sequence counter of total flows seen
   flow_sequence:   uint32;
   # Type of flow-switching engine
   engine_type:     uint8;
