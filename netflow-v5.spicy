@@ -4,7 +4,7 @@ type Header = unit {
   # NetFlow export format version number
   version:         uint16(5);
   # Number of flows exported in this packet (1-30)
-  count:           uint16;
+  count:           uint16 &requires=($$ >= 1 && $$ <= 30);
   # Current time in milliseconds since the export device booted
   SysUptime:       uint32;
   # Current count of seconds since 0000 UTC 1970
