@@ -51,8 +51,17 @@ type Record = unit {
   dstport:     uint16;
   # Unused (zero) bytes
   pad1:        uint8;
-  # Cumulative OR of TCP flags
-  tcp_flags:   uint8;
+  # Cumulative TCP flags
+  tcp_flags:   bitfield(8) {
+    fin: 0;
+    syn: 1;
+    rst: 2;
+    psh: 3;
+    ack: 4;
+    urg: 5;
+    ece: 6;
+    cwr: 7;
+  };
   # IP protocol type (for example, TCP = 6; UDP = 17)
   prot:        uint8;
   # IP type of service (ToS)
